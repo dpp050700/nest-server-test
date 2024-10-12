@@ -1,0 +1,115 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "vetur.validation.script": false,
+  "vetur.validation.template": false,
+
+  //以下内容可以拷贝到 项目中的settings.json
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "dist": true,
+    "package-lock.json": true,
+    "yarn.lock": true
+  },
+  // 指定哪些文件不被 VSCode 监听，预防启动 VSCode 时扫描的文件太多，导致 CPU 占用过高
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/dist/**": true
+  },
+  // 配置 VScode 使用 prettier 的 formatter
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[stylus]": {
+    "editor.defaultFormatter": "thisismanta.stylus-supremacy"
+  },
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // stylus 格式配置
+  "stylusSupremacy.insertColons": false,
+  "stylusSupremacy.insertLeadingZeroBeforeFraction": false,
+  "stylusSupremacy.insertSemicolons": false,
+  "stylusSupremacy.insertNewLineAroundBlocks": false,
+  "json.maxItemsComputed": 10000,
+  "stylelint.enable": false,
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "[ ]",
+    "[x]"
+  ],
+  "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+  "workbench.editor.untitled.hint": "hidden",
+  "svg.preview.mode": "svg",
+  "workbench.startupEditor": "none",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.inlineSuggest.enabled": true,
+  "files.associations": {
+    "*.json": "jsonc"
+  },
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "stylelint.validate": ["less", "css", "scss"],
+  "typescript.tsdk": "./node_modules/typescript/lib",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "path-intellisense.mappings": {
+    "@": "${workspaceRoot}/src",
+    "_c": "${workspaceRoot}/src/components"
+  },
+  "prettier.endOfLine": "auto"
+}
