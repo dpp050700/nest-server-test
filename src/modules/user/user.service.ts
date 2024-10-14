@@ -13,7 +13,10 @@ export class UserService {
   findAll(queryUserDto: QueryUserDto) {
     if (queryUserDto.page == 1) {
       // throw new HttpException('123', HttpStatus.BAD_REQUEST);
-      throw new BusinessException(205, queryUserDto, '用户被锁定');
+      throw new BusinessException('用户被锁定', queryUserDto);
+    }
+    if (queryUserDto.page == 11) {
+      throw new HttpException('error', HttpStatus.BAD_REQUEST);
     }
     return queryUserDto;
   }

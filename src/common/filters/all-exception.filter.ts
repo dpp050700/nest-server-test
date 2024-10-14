@@ -6,38 +6,46 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-// import { HttpAdapterHost } from '@nestjs/core';
+import { BusinessException } from '../exceptions/business.exception';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   private readonly logger = new Logger(AllExceptionsFilter.name);
-  constructor() {} // private readonly httpAdapterHost: HttpAdapterHost, // private readonly logger: LoggerService,
+  constructor() {}
   catch(exception: any, host: ArgumentsHost) {
-    // const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const request = ctx.getRequest();
     const response = ctx.getResponse();
+
+    const url = request.url;
 
     const httpStatus =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    const msg: any = exception['response'];
+    const message = exception.message;
 
-    console.log(httpStatus);
+    const errorCode =
+      exception instanceof BusinessException ? exception.errorCode : httpStatus;
+
+    const data = exception.response.data;
+
+    if (
+      !(exception instanceof BusinessException) &&
+      httpStatus === HttpStatus.INTERNAL_SERVER_ERROR
+    ) {
+      Logger.error(exception, undefined, 'Catch');
+    } else {
+      this.logger.warn(`error：(${httpStatus}) ${message} : ${decodeURI(url)}`);
+    }
 
     const responseBody = {
-      code: msg.code,
-      data: msg.data,
-      message: 'error',
+      code: errorCode,
+      data: data || null,
+      message: message,
     };
 
-    this.logger.error('[error]', responseBody);
-
-    // console.log(responseBody);
-
     response.status(httpStatus).send(responseBody);
-    // httpAdapter.reply(response, responseBody, httpStatus);
   }
 }
