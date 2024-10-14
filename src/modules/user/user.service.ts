@@ -3,6 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { QueryUserDto } from './dto/query-user.dto';
 import { BusinessException } from 'src/common/exceptions/business.exception';
+import { ErrorCodeEnum } from 'src/constants/error-code.constant';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,7 @@ export class UserService {
   findAll(queryUserDto: QueryUserDto) {
     if (queryUserDto.page == 1) {
       // throw new HttpException('123', HttpStatus.BAD_REQUEST);
-      throw new BusinessException('用户被锁定', queryUserDto);
+      throw new BusinessException(ErrorCodeEnum.SERVER_ERROR, queryUserDto);
     }
     if (queryUserDto.page == 11) {
       throw new HttpException('error', HttpStatus.BAD_REQUEST);
