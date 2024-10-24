@@ -11,9 +11,8 @@ export class UserService {
     return 'This action adds a new user';
   }
 
-  findAll(queryUserDto: QueryUserDto) {
+  list(queryUserDto: QueryUserDto) {
     if (queryUserDto.page == 1) {
-      // throw new HttpException('123', HttpStatus.BAD_REQUEST);
       throw new BusinessException(ErrorCodeEnum.SERVER_ERROR, queryUserDto);
     }
     if (queryUserDto.page == 11) {
@@ -22,7 +21,7 @@ export class UserService {
     return queryUserDto;
   }
 
-  findOne(id: number) {
+  info(id: number) {
     return `This action returns a #${id} user`;
   }
 

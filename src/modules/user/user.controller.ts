@@ -23,13 +23,13 @@ export class UserController {
   }
 
   @Get()
-  findAll(@Query() dto: QueryUserDto) {
-    return this.userService.findAll(dto);
+  list(@Query() dto: QueryUserDto) {
+    return this.userService.list(dto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  read(@Param('id') id: string) {
+    return this.userService.info(+id);
   }
 
   @Patch(':id')

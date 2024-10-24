@@ -1,12 +1,12 @@
-import { Min, Max, IsInt } from 'class-validator';
+import { Min, Max, IsInt, IsNotEmpty } from 'class-validator';
 
 export class PagerDto {
   @Min(1)
   @IsInt()
-  page: number;
+  page?: number;
 
   @Min(1)
   @Max(100)
   @IsInt()
-  pageSize: number;
+  pageSize?: number;
 }
