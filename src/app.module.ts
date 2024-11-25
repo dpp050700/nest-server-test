@@ -6,9 +6,22 @@ import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './common/filters/all-exception.filter';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { DatabaseModule } from './shared/database/database.module';
+import { ConfigModule } from '@nestjs/config';
+
+import config from './config';
 
 @Module({
-  imports: [UserModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      expandVariables: true,
+      envFilePath: ['.env'],
+      load: [...Object.values(config)],
+    }),
+    UserModule,
+    DatabaseModule,
+  ],
   controllers: [],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
