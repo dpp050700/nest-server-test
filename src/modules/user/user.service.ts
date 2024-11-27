@@ -7,6 +7,7 @@ import { ErrorCodeEnum } from 'src/constants/error-code.constant';
 import { InjectEntityManager, InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { UserEntity } from './entities/user.entity';
+import { encryptPassword, makeSalt } from 'src/utils/crypto.util';
 
 @Injectable()
 export class UserService {
@@ -29,8 +30,16 @@ export class UserService {
       throw new BusinessException(ErrorCodeEnum.USER_PASSWORD_EMPTY);
     }
 
+    const salt = makeSalt();
+    const encryptedPassword = encryptPassword(password, salt);
+
     await this.entityManager.transaction(async (manager) => {
-      const user = manager.create(UserEntity, { email, password, ...rest });
+      const user = manager.create(UserEntity, {
+        email,
+        password: encryptedPassword,
+        password_salt: salt,
+        ...rest,
+      });
       const result = await manager.save(user);
       return result;
     });
