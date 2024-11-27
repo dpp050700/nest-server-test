@@ -8,6 +8,7 @@ import { ResponseInterceptor } from './common/interceptors/response.interceptor'
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DatabaseModule } from './shared/database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './modules/auth/auth.module';
 
 import config from './config';
 
@@ -21,6 +22,7 @@ import config from './config';
     }),
     UserModule,
     DatabaseModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [

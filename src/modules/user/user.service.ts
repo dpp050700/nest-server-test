@@ -16,12 +16,28 @@ export class UserService {
     @InjectEntityManager() private entityManager: EntityManager,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create({ email, password, ...rest }: CreateUserDto) {
+    const isExist = await this.userRepository.findOneBy({
+      email,
+    });
+
+    if (isExist) {
+      throw new BusinessException(ErrorCodeEnum.USER_EXIST);
+    }
+
+    if (!password) {
+      throw new BusinessException(ErrorCodeEnum.USER_PASSWORD_EMPTY);
+    }
+
     await this.entityManager.transaction(async (manager) => {
-      const user = manager.create(UserEntity, createUserDto);
+      const user = manager.create(UserEntity, { email, password, ...rest });
       const result = await manager.save(user);
       return result;
     });
+  }
+
+  async findOneByEmail(email: string) {
+    return this.userRepository.findOneBy({ email });
   }
 
   list(queryUserDto: QueryUserDto) {
