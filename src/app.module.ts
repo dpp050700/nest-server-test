@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, ClassSerializerInterceptor } from '@nestjs/common';
 // import { AppController } from './app.controller';
 // import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
@@ -26,6 +26,7 @@ import config from './config';
   ],
   controllers: [],
   providers: [
+    { provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor }, // 过滤掉 Entity 中的 @Exclude() 装饰器
     { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
     { provide: APP_FILTER, useClass: AllExceptionsFilter },
   ],
