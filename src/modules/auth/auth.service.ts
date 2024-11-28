@@ -5,13 +5,18 @@ import { BusinessException } from 'src/common/exceptions/business.exception';
 import { ErrorCodeEnum } from 'src/constants/error-code.constant';
 import { decryptPassword } from 'src/utils/crypto.util';
 import { UserEntity } from '../user/entities/user.entity';
+import { TokenService } from './service/token/token.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private tokenService: TokenService,
+  ) {}
 
   async login(user: UserEntity) {
-    return user;
+    const token = await this.tokenService.generateToken(user);
+    return { token };
   }
 
   async validateUser({ email, password: inputPassword }: LoginDto) {
