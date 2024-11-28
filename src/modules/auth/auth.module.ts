@@ -8,9 +8,12 @@ import { TokenService } from './service/token/token.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { AccessTokenEntity } from './entities/access-token.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([AccessTokenEntity]),
     UserModule,
     PassportModule,
     JwtModule.registerAsync({
