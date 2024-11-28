@@ -31,7 +31,14 @@ export class ResponseInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
     const response = context.switchToHttp().getResponse();
-    const httpCode = this.reflector.get('__httpCode__', context.getHandler());
+    // const httpCode = this.reflector.get('__httpCode__', context.getHandler());
+
+    const httpCode = this.reflector.getAllAndOverride('__httpCode__', [
+      context.getHandler(), // 用于获取当前请求所在的路由处理方法(Controller中的方法)
+      // context.getClass() 用于获取当前请求所在的控制器类
+      // 例如请求 /users 时会返回 UsersController 这个类
+      context.getClass(),
+    ]);
     return next.handle().pipe(
       map((data) => {
         // 如果设置了 @HttpCode 则使用设置的状态码,否则使用默认的 200

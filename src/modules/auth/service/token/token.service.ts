@@ -16,4 +16,15 @@ export class TokenService {
     });
     return token;
   }
+
+  async verifyToken(token: string) {
+    let isValid = false;
+    try {
+      await this.jwtService.verify(token);
+      isValid = true;
+    } catch (error) {
+      console.log(error);
+    }
+    return isValid;
+  }
 }
