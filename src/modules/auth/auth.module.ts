@@ -11,6 +11,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { AccessTokenEntity } from './entities/access-token.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+const providers = [AuthService, TokenService];
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([AccessTokenEntity]),
@@ -29,6 +31,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, TokenService, JwtStrategy],
+  providers: [...providers, LocalStrategy, JwtStrategy],
+  exports: [...providers],
 })
 export class AuthModule {}

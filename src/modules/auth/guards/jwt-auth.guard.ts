@@ -1,17 +1,28 @@
-import { ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { PUBLIC_KEY } from 'src/common/decorators/public.decorator';
 import { ExtractJwt } from 'passport-jwt';
 import { isEmpty } from 'lodash';
+import { TokenService } from '../service/token/token.service';
+import { BusinessException } from 'src/common/exceptions/business.exception';
+import { ErrorCodeEnum } from 'src/constants/error-code.constant';
 
+@Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   jwtFromRequestFn = ExtractJwt.fromAuthHeaderAsBearerToken();
-  constructor(private readonly reflector: Reflector) {
+  constructor(
+    private reflector: Reflector,
+    private tokenService: TokenService,
+  ) {
     super();
   }
   async canActivate(context: ExecutionContext): Promise<any> {
-    const isPublic = this.reflector.get(PUBLIC_KEY, [
+    const isPublic = this.reflector.getAllAndOverride(PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
@@ -20,22 +31,26 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     const token = this.jwtFromRequestFn(request);
 
-    let result = false;
+    let result: any = false;
 
     try {
       result = await super.canActivate(context);
-    } catch (error) {
+    } catch {
       if (isPublic) {
         return true;
       }
-
       if (isEmpty(token)) {
-        throw new UnauthorizedException('未登录');
+        throw new BusinessException(ErrorCodeEnum.USER_UNAUTHORIZED);
       }
-      console.log(error);
     }
 
-    console.log('JwtAuthGuard');
+    if (result) {
+      const isTokenValid = await this.tokenService.checkAccessToken(token);
+      if (!isTokenValid) {
+        throw new BusinessException(ErrorCodeEnum.TOKEN_INVALID);
+      }
+    }
+
     return result;
   }
 }

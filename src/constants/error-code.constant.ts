@@ -5,4 +5,7 @@ export enum ErrorCodeEnum {
   USER_PASSWORD_EMPTY = '1002:密码不能为空',
   USER_NOT_FOUND = '1003:用户不存在',
   USER_PASSWORD_ERROR = '1004:密码错误',
+
+  USER_UNAUTHORIZED = '2001:用户未登录',
+  TOKEN_INVALID = '2002:token无效',
 }

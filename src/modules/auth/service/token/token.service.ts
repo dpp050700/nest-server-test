@@ -4,11 +4,13 @@ import { UserEntity } from 'src/modules/user/entities/user.entity';
 import { SecurityConfig } from 'src/config/secret.config';
 import { AccessTokenEntity } from '../../entities/access-token.entity';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class TokenService {
   constructor(
     private readonly jwtService: JwtService,
+    @InjectRepository(AccessTokenEntity)
     private readonly accessTokenRepository: Repository<AccessTokenEntity>,
     @Inject(SecurityConfig.KEY) private securityConfig,
   ) {}
@@ -33,7 +35,7 @@ export class TokenService {
     let isValid = false;
     try {
       await this.verifyAccessToken(token);
-      const res = this.accessTokenRepository.findOneBy({
+      const res = await this.accessTokenRepository.findOneBy({
         value: token,
       });
       isValid = Boolean(res);
