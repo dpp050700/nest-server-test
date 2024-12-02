@@ -32,16 +32,19 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const token = this.jwtFromRequestFn(request);
 
     let result: any = false;
+    console.log('token', token);
 
     try {
       result = await super.canActivate(context);
-    } catch {
+    } catch (error) {
+      console.log('error', error);
       if (isPublic) {
         return true;
       }
       if (isEmpty(token)) {
         throw new BusinessException(ErrorCodeEnum.USER_UNAUTHORIZED);
       }
+      throw new BusinessException(ErrorCodeEnum.TOKEN_INVALID);
     }
 
     if (result) {
